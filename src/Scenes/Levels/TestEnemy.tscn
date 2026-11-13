@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://q6gc1byic2et"]
+
+[ext_resource type="Script" uid="uid://dlqh0ampefcru" path="res://src/Scripts/test_enemy.gd" id="1_2bq8m"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ype1p"]
+
+[node name="TestEnemy" type="CharacterBody3D" unique_id=753753743 groups=["Enemies"]]
+script = ExtResource("1_2bq8m")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="." unique_id=1967187975]
+mesh = SubResource("CapsuleMesh_ype1p")

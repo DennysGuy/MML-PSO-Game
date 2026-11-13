@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://bqo3wua7y4bkr"]
+
+[ext_resource type="PackedScene" uid="uid://q6gc1byic2et" path="res://src/Scenes/Levels/TestEnemy.tscn" id="1_juh6u"]
+[ext_resource type="PackedScene" uid="uid://8jr05jbtgoba" path="res://src/Scenes/Player/Player.tscn" id="1_ype1p"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ype1p"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_juh6u"]
+sky_material = SubResource("ProceduralSkyMaterial_ype1p")
+
+[sub_resource type="Environment" id="Environment_qq7ux"]
+background_mode = 2
+background_energy_multiplier = 1.5
+sky = SubResource("Sky_juh6u")
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_juh6u"]
+albedo_color = Color(3.272891e-06, 0.63864714, 0.37699735, 1)
+
+[node name="TestArea" type="Node3D" unique_id=1932028520]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1840156414]
+environment = SubResource("Environment_qq7ux")
+
+[node name="TestEnemy" parent="." unique_id=753753743 instance=ExtResource("1_juh6u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.93009067, 9.331776)
+
+[node name="TestEnemy2" parent="." unique_id=565088506 instance=ExtResource("1_juh6u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.19836, 0.93009067, 17.250072)
+
+[node name="TestEnemy3" parent="." unique_id=728134989 instance=ExtResource("1_juh6u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.873722, 0.93009067, 3.117505)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1953567727]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0782108, -0.23358846, -8.097491)
+material_override = SubResource("StandardMaterial3D_juh6u")
+use_collision = true
+size = Vector3(100, 0.363, 100)
+
+[node name="Player3D" parent="." unique_id=263223335 instance=ExtResource("1_ype1p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6908171, 0, -1.7235498)
