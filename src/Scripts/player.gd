@@ -44,6 +44,18 @@ func _physics_process(delta: float) -> void:
 			locked_on_enemy = null
 			print("This is Enemy Locked on %s" % locked_on_enemy)
 
+	if locked_on_enemy:
+		
+		if Input.is_action_just_pressed("lock_on_left") and Input.is_action_just_pressed("lock_on_right"):
+			print("Can't press both")
+		
+		if Input.is_action_just_pressed("lock_on_left"):
+			switch_lock_on_target(-1)
+		
+		if Input.is_action_just_pressed("lock_on_right"):
+			switch_lock_on_target(1)
+		
+
 	camera_pivot.rotation.x += camera_input_direction.y * delta
 	camera_pivot.rotation.x = clamp(camera_pivot.rotation.x, -PI/6.0, PI/3.0)
 	camera_pivot.rotation.y -= camera_input_direction.x * delta
@@ -122,6 +134,8 @@ func choose_lock_on_target() -> void:
 	
 	var closest_target : TestEnemy = null
 	for child in get_tree().get_nodes_in_group("Enemies"):
+		if camera.is_position_behind(child.global_position):
+			continue	
 		if !closest_target:
 			closest_target = child
 		else:
@@ -130,3 +144,44 @@ func choose_lock_on_target() -> void:
 				closest_target = next_target
 				
 	locked_on_enemy = closest_target
+
+func switch_lock_on_target(direction : int) -> void:
+	if !is_instance_valid(locked_on_enemy):
+		return
+	
+	var current_screen_position = camera.unproject_position(locked_on_enemy.global_position)
+	
+	var best_enemy : TestEnemy = null
+	var best_score = INF
+	
+	var enemies = get_tree().get_nodes_in_group("Enemies")
+	
+	for enemy in enemies:
+		if enemy == locked_on_enemy:
+			continue
+		
+		if !is_instance_valid(enemy):
+			continue
+		
+		if camera.is_position_behind(enemy.global_position):
+			continue
+		
+		var screen_pos = camera.unproject_position(enemy.global_position)
+		var horizontal_difference = screen_pos.x - current_screen_position.x
+		
+		if direction == -1 and horizontal_difference >= 0:
+			continue
+		
+		if direction == 1 and horizontal_difference <= 0:
+			continue
+		
+		var vertical_difference = abs(screen_pos.y - current_screen_position.y)
+		var score = abs(horizontal_difference) + vertical_difference * 1.5
+		
+		if score < best_score:
+			best_score = score
+			best_enemy = enemy
+	
+	if best_enemy:
+		locked_on_enemy = best_enemy
+		print("Switched target to: ", locked_on_enemy)
