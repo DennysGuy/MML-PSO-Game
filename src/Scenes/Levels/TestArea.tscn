@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bqo3wua7y4bkr"]
 
 [ext_resource type="PackedScene" uid="uid://q6gc1byic2et" path="res://src/Scenes/Levels/TestEnemy.tscn" id="1_juh6u"]
-[ext_resource type="PackedScene" uid="uid://8jr05jbtgoba" path="res://src/Scenes/Player/Player.tscn" id="1_ype1p"]
+[ext_resource type="Script" uid="uid://4pcruxct074w" path="res://src/Scripts/test_area.gd" id="1_qq7ux"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ype1p"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -20,6 +20,7 @@ glow_enabled = true
 albedo_color = Color(3.272891e-06, 0.63864714, 0.37699735, 1)
 
 [node name="TestArea" type="Node3D" unique_id=1932028520]
+script = ExtResource("1_qq7ux")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1840156414]
 environment = SubResource("Environment_qq7ux")
@@ -39,5 +40,9 @@ material_override = SubResource("StandardMaterial3D_juh6u")
 use_collision = true
 size = Vector3(100, 0.363, 100)
 
-[node name="Player3D" parent="." unique_id=263223335 instance=ExtResource("1_ype1p")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6908171, 0, -1.7235498)
+[node name="Players" type="Node" parent="." unique_id=198627458]
+unique_name_in_owner = true
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=485038331]
+_spawnable_scenes = PackedStringArray("uid://8jr05jbtgoba")
+spawn_path = NodePath("../Players")

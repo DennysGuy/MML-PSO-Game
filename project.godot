@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="MML-PSO-Game"
-run/main_scene="uid://do1d7mpsy3d45"
+run/main_scene="uid://p4fk0t5th45m"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GameManager="*uid://cscnqutp3fhrv"
 
 [display]
 

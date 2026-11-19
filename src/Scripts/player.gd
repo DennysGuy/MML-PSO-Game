@@ -20,6 +20,15 @@ var gravity : float = -30.0
 
 var locked_on_enemy : TestEnemy = null
 
+var current_animation : String  = &""
+
+func _ready() -> void:
+	camera.current = is_multiplayer_authority()
+	animation_player.speed_scale = 1.5
+
+func _enter_tree() -> void:
+	set_multiplayer_authority(int(name))
+
 func _input(event : InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -36,6 +45,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		camera_input_direction = event.screen_relative * mouse_sensitivity
 
 func _physics_process(delta: float) -> void:
+	
+	if !is_multiplayer_authority():
+		return
 	
 	if Input.is_action_just_pressed("lock_on"):
 		if !locked_on_enemy:
@@ -84,6 +96,7 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 	
+	
 	if move_direction.length() > 0.2:
 		last_movement_direction = move_direction
 	var target_angle := Vector3.BACK.signed_angle_to(last_movement_direction, Vector3.UP)
@@ -93,19 +106,25 @@ func _physics_process(delta: float) -> void:
 	
 	if is_on_floor():
 		if ground_speed > 0.0:
-			animation_player.play("Run")
+			play_animation(&"Run")
 		else:
-			animation_player.play("Idle")
+			play_animation(&"Idle")
 	else:
 		if velocity.y > 0:
-			animation_player.play("Jump")
+			play_animation(&"Jump")
 		else:
-			animation_player.play("Fall")
+			play_animation(&"Fall")
 			
 	var raw_camera_input := Input.get_vector("rotate_camera_left","rotate_camera_right","rotate_camera_up","rotate_camera_down")
 	
 	camera_input_direction = raw_camera_input * joy_stick_sensivity
+	sync_pos.rpc(global_position)
 	
+
+@rpc
+func sync_pos(pos:Vector3) -> void:
+	global_position = pos
+
 func set_lock_on_camera(delta: float) -> void:
 	if !is_instance_valid(locked_on_enemy):
 		locked_on_enemy = null
@@ -185,3 +204,17 @@ func switch_lock_on_target(direction : int) -> void:
 	if best_enemy:
 		locked_on_enemy = best_enemy
 		print("Switched target to: ", locked_on_enemy)
+
+
+func play_animation(animation_name : String) -> void:
+	if current_animation == animation_name:
+		return
+	
+	current_animation = animation_name
+	
+	animation_player.play(animation_name)
+	sync_animation.rpc(animation_name)
+	
+@rpc("authority", "call_remote", "reliable")
+func sync_animation(animation_name: StringName):
+	animation_player.play(animation_name)

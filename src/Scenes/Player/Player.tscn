@@ -3,6 +3,14 @@
 [ext_resource type="Script" uid="uid://bercy27pl74hc" path="res://src/Scripts/player.gd" id="1_3oybr"]
 [ext_resource type="Texture2D" uid="uid://0e5qc3s4aw08" path="res://Assets/Graphics/Models/LoveChann6_LoveChan-BodyTexture.png" id="2_3oybr"]
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3oybr"]
+properties/0/path = NodePath("Model:rotation")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("Model:position")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q6xm5"]
 resource_name = " "
 cull_mode = 2
@@ -7747,6 +7755,9 @@ height = 1.9995117
 script = ExtResource("1_3oybr")
 joy_stick_sensivity = 2.0
 animation_player = NodePath("Model/AnimationPlayer")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=132508279]
+replication_config = SubResource("SceneReplicationConfig_3oybr")
 
 [node name="Model" type="Node3D" parent="." unique_id=1743165792]
 
