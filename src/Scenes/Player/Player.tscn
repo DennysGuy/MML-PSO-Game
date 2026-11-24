@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://bercy27pl74hc" path="res://src/Scripts/player.gd" id="1_3oybr"]
 [ext_resource type="Texture2D" uid="uid://0e5qc3s4aw08" path="res://Assets/Graphics/Models/LoveChann6_LoveChan-BodyTexture.png" id="2_3oybr"]
+[ext_resource type="Script" uid="uid://d34i45to0pyx" path="res://src/Scripts/Statemachine/statemachine.gd" id="3_51uf3"]
+[ext_resource type="Script" uid="uid://pitttwl2jkx7" path="res://src/Scripts/Statemachine/Player/player_idle.gd" id="4_qw5p0"]
+[ext_resource type="Script" uid="uid://bp58fo8csyxmr" path="res://src/Scripts/Statemachine/Player/player_run.gd" id="5_t5wo0"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3oybr"]
 properties/0/path = NodePath("Model:rotation")
@@ -7751,9 +7754,15 @@ height = 1.9995117
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_3oybr"]
 
-[node name="Player3D" type="CharacterBody3D" unique_id=263223335 node_paths=PackedStringArray("animation_player")]
+[node name="Player3D" type="CharacterBody3D" unique_id=263223335 node_paths=PackedStringArray("state_machine", "model", "animation_player")]
 script = ExtResource("1_3oybr")
 joy_stick_sensivity = 2.0
+state_machine = NodePath("Statemachine")
+model = NodePath("Model")
+move_speed = 600.0
+acceleration = 10.0
+deceleration = 10.0
+rotation_speed = 30.0
 animation_player = NodePath("Model/AnimationPlayer")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=132508279]
@@ -9397,3 +9406,15 @@ spring_length = 6.0
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D" unique_id=2146012870]
 unique_name_in_owner = true
+
+[node name="Statemachine" type="Node" parent="." unique_id=490799941 node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_51uf3")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="Statemachine" unique_id=1870132920 node_paths=PackedStringArray("run_state")]
+script = ExtResource("4_qw5p0")
+run_state = NodePath("../Run")
+
+[node name="Run" type="Node" parent="Statemachine" unique_id=1388929144 node_paths=PackedStringArray("idle_state")]
+script = ExtResource("5_t5wo0")
+idle_state = NodePath("../Idle")
