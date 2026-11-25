@@ -1,11 +1,11 @@
 class_name PlayerRun extends State
 
 @export var idle_state : State
-
+@export var dash_state : State
 var deceleration : float = 10.0
 
 func enter() -> void:
-	parent.play_animation(&"Run")
+	parent.play_animation(&"Run 2")
 
 func exit() -> void:
 	pass
@@ -18,6 +18,9 @@ func process_frame(_delta: float) -> State:
 
 
 func process_physics(_delta: float) -> State:
+	
+	if Input.is_action_just_pressed("jump"):
+		return dash_state
 	var raw_input := Input.get_vector(
 		"move_left",
 		"move_right",

@@ -1,6 +1,6 @@
 class_name MultiplayerMenu extends Control
 
-const IP_ADDRESS = "10.0.0.228"
+const IP_ADDRESS = "LocalHost"
 const PORT = 7777
 const MAX_CLIENTS = 4
 signal server_disconnected

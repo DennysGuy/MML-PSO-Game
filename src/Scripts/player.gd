@@ -9,12 +9,13 @@ var camera_input_direction : Vector2 = Vector2.ZERO
 var last_movement_direction : Vector3 = Vector3.BACK
 
 var locked_on_enemy : TestEnemy = null
-
 var current_animation : String  = &""
+@export_group("Player Stats")
+@export var dash_speed : float = 120.0
 
 func _ready() -> void:
 	camera.current = is_multiplayer_authority()
-	animation_player.speed_scale = 1.5
+	animation_player.speed_scale = 1.0
 	state_machine.init(self)
 
 func _enter_tree() -> void:
